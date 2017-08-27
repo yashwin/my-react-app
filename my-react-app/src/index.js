@@ -2,40 +2,50 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Blogs(props) {
-  const sidebar = (
-    <ul>
-      {props.posts.map((post) =>
-        <li key={post.id}>
-          {post.title}
-        </li>
-       )}
-    </ul>
-  );
+class ReservationForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuest: 2
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
 
-  const content = props.posts.map((post) =>
-      <div key={post.id}>
-        <h3>{post.title}</h3>
-        <p>{post.content}</p>
-      </div>
-  );
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
 
-  return (
-    <div>
-      {sidebar}
-    <hr />
-      {content}
-    </div>
-  );
+    this.setState({
+      [name]: value
+    });
+  }
+
+  render() {
+    return(
+      <form>
+        <label>
+          Is going:
+          <input name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          No of Guests:
+          <input name="numberOfGuest"
+            type="number"
+            value={this.state.numberOfGuest}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    )
+  }
 }
 
-
-const posts = [
-  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
-  {id: 2, title: 'Installation', content: 'You can install React from npm.'}
-];
-
 ReactDOM.render(
-  <Blogs posts={posts} />,
+  <ReservationForm />,
   document.getElementById('root')
 );
